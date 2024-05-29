@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider))]
 public class PlayerController : Characters
@@ -8,16 +10,14 @@ public class PlayerController : Characters
     [SerializeField] private FixedJoystick _joystick;
     [SerializeField] private Animator _animator;
     [SerializeField] private float _moveSpeed;
-
-    public TriggerControl TriggerControl;
+    [SerializeField] private TextMeshProUGUI levelTxt;
     private void FixedUpdate()
     {
         Movement();
     }
-
     public override void Attack()
     {
-        print("attack");
+        _animator.SetBool("Attack", true);
     }
     public override void Die()
     {
@@ -30,18 +30,31 @@ public class PlayerController : Characters
         if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
         {
             _animator.SetBool("Run", true);
+
             transform.rotation = Quaternion.LookRotation(_rb.velocity);
         }
         else
+        {
             _animator.SetBool("Run", false);
+        }
     }
-
-    ///--------------------------------
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
-            Die();
+            Attack();
         }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            _animator.SetBool("Attack", false);
+        }
+    }
+    public override void LevelSystem()
+    {
+        //    base.LevelCount = 3;
+        //    levelTxt.text = base.LevelCount.ToString();
     }
 }

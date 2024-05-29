@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -9,13 +10,13 @@ public class VisionCone : MonoBehaviour
     public Material VisionConeMaterial;
     public float VisionRange;
     public float VisionAngle;
-    public LayerMask VisionObstructingLayer;//layer with objects that obstruct the enemy view, like walls, for example
-    public int VisionConeResolution = 120;//the vision cone will be made up of triangles, the higher this value is the pretier the vision cone will be
+    public LayerMask VisionObstructingLayer;
+    public int VisionConeResolution = 120;
     Mesh VisionConeMesh;
     MeshFilter MeshFilter_;
-    //Create all of these variables, most of them are self explanatory, but for the ones that aren't i've added a comment to clue you in on what they do
-    //for the ones that you dont understand dont worry, just follow along
 
+    public delegate void VisionHitEvent();
+    public event VisionHitEvent OnVisionHit;
     void Start()
     {
         transform.AddComponent<MeshRenderer>().material = VisionConeMaterial;
@@ -23,14 +24,12 @@ public class VisionCone : MonoBehaviour
         VisionConeMesh = new Mesh();
         VisionAngle *= Mathf.Deg2Rad;
     }
-
-
     void Update()
     {
-        DrawVisionCone();//calling the vision cone function everyframe just so the cone is updated every frame
+        DrawVisionCone();
     }
 
-    void DrawVisionCone()//this method creates the vision cone mesh
+    void DrawVisionCone()
     {
         int[] triangles = new int[(VisionConeResolution - 1) * 3];
         Vector3[] Vertices = new Vector3[VisionConeResolution + 1];
@@ -49,12 +48,18 @@ public class VisionCone : MonoBehaviour
             if (Physics.Raycast(transform.position, RaycastDirection, out RaycastHit hit, VisionRange, VisionObstructingLayer))
             {
                 Vertices[i + 1] = VertForward * hit.distance;
+
+                //playerin gorus alanýna girisi burda kontrol ediliyor.
+                if (hit.collider.gameObject.CompareTag("Player"))
+                {
+                    OnVisionHit?.Invoke();
+                }
+
             }
             else
             {
                 Vertices[i + 1] = VertForward * VisionRange;
             }
-
 
             Currentangle += angleIcrement;
         }

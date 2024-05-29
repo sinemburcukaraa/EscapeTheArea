@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using JetBrains.Annotations;
+
 public abstract class Enemy : Characters
 {
-    public virtual void FieldOfView()
-    {
-
-    }
-  
+    public abstract void FieldOfView();
 }

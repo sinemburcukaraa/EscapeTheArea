@@ -9,22 +9,29 @@ public class MovingEnemy : Enemy
     [SerializeField] private PathType pathType = PathType.CatmullRom;
     [SerializeField] private Animator _animator;
     [SerializeField] private List<Vector3> pathVal = new();
+    //[SerializeField] private int LevelCount;
+    [SerializeField] private VisionCone visionCone;
+
     private void Start()
     {
         Movement();
+        visionCone.OnVisionHit += FieldOfView;
     }
-    //public override void FieldOfView()
-    //{
-    //    base.FieldOfView();
-    //}
+    public override void FieldOfView()
+    {
+        Attack();
+    }
     public override void Attack()
     {
-        _animator.SetBool("run", true);
+        _animator.SetBool("attack", true);
+        DOVirtual.DelayedCall(1, () =>
+        {
+            _animator.SetBool("attack", false);
+        });
     }
     public override void Die()
     {
         _animator.SetBool("run", false);
-        _animator.SetBool("attack", true);
     }
     public override void Movement()
     {
@@ -38,18 +45,20 @@ public class MovingEnemy : Enemy
 
         movement.OnWaypointChange(OnWaypointChange);
     }
-
     private void OnWaypointChange(int waypointIndex)
     {
         StartCoroutine(WaitAtWaypoint(waypointIndex));
     }
-
     private IEnumerator WaitAtWaypoint(int waypointIndex)
     {
         player.transform.DOPause();
-        _animator.SetBool("run", false);
-
+        _animator.SetBool("run", false); 
         yield return new WaitForSeconds(1);
         player.transform.DOPlay();
+        _animator.SetBool("run", true);
+    }
+    public override void LevelSystem()
+    {
+        throw new System.NotImplementedException();
     }
 }
