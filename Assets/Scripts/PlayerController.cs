@@ -10,10 +10,17 @@ public class PlayerController : Characters
     [SerializeField] private FixedJoystick _joystick;
     [SerializeField] private Animator _animator;
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private TextMeshProUGUI levelTxt;
+    [SerializeField] private TextMeshPro Txt;
+    public int levelCount;   
+
     private void FixedUpdate()
     {
         Movement();
+    }
+    public void SetLevelTxt()
+    {
+        levelTxt = Txt;
+        LevelSystem(levelCount);
     }
     public override void Attack()
     {
@@ -38,12 +45,21 @@ public class PlayerController : Characters
             _animator.SetBool("Run", false);
         }
     }
+    public override void LevelSystem(int levelCount)
+    {
+        base.LevelSystem(levelCount);
+    }
+
+
+
+    // Player Trigger Control
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
             Attack();
         }
+
     }
     private void OnTriggerExit(Collider other)
     {
@@ -51,10 +67,5 @@ public class PlayerController : Characters
         {
             _animator.SetBool("Attack", false);
         }
-    }
-    public override void LevelSystem()
-    {
-        //    base.LevelCount = 3;
-        //    levelTxt.text = base.LevelCount.ToString();
     }
 }

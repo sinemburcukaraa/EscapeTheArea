@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MovingEnemy : Enemy
@@ -8,14 +9,21 @@ public class MovingEnemy : Enemy
     [SerializeField] private Transform player;
     [SerializeField] private PathType pathType = PathType.CatmullRom;
     [SerializeField] private Animator _animator;
-    [SerializeField] private List<Vector3> pathVal = new();
-    //[SerializeField] private int LevelCount;
+    [SerializeField] private List<Transform> pathVal = new();
+    [SerializeField] private int LevelCount;
     [SerializeField] private VisionCone visionCone;
+    [SerializeField] private TextMeshPro Txt;
 
     private void Start()
     {
         Movement();
+        SetLevelTxt();
         visionCone.OnVisionHit += FieldOfView;
+    }
+    public void SetLevelTxt()
+    {
+        levelTxt = Txt;
+        LevelSystem(LevelCount);
     }
     public override void FieldOfView()
     {
@@ -37,8 +45,9 @@ public class MovingEnemy : Enemy
     {
         if (pathVal.Count == 0)
             return;
+        Vector3[] pathPositions = pathVal.ConvertAll(t => t.position).ToArray();
 
-        Tweener movement = player.transform.DOPath(pathVal.ToArray(), 35, pathType)
+        Tweener movement = player.transform.DOPath(pathPositions, 35, pathType)
             .SetOptions(true)
             .SetLookAt(0.01f)
             .SetLoops(-1);
@@ -57,8 +66,8 @@ public class MovingEnemy : Enemy
         player.transform.DOPlay();
         _animator.SetBool("run", true);
     }
-    public override void LevelSystem()
+    public override void LevelSystem(int levelCount)
     {
-        throw new System.NotImplementedException();
+        base.LevelSystem(levelCount);
     }
 }
