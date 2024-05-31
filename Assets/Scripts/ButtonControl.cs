@@ -18,7 +18,6 @@ public class ButtonControl : MonoBehaviour
             DoorOpeningMovement();
         }
     }
-
     public void ButtonActive()
     {
         lockSprite.sprite = lockImage;

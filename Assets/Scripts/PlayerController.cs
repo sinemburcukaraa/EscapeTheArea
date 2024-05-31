@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,10 +9,11 @@ public class PlayerController : Characters
 {
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private FixedJoystick _joystick;
-    [SerializeField] private Animator _animator;
+    public Animator _animator;
     [SerializeField] private float _moveSpeed;
     [SerializeField] private TextMeshPro Txt;
     public int levelCount;
+    public bool canMove = true;
 
     private void FixedUpdate()
     {
@@ -19,25 +21,20 @@ public class PlayerController : Characters
     }
     public void SetLevelTxt()
     {
-        levelTxt = Txt;
-        LevelSystem(levelCount);
+        LevelSystem(levelCount, Txt);
     }
-    public override void Attack()
+   
+    public override void Die(Animator animator)
     {
-        _animator.SetBool("Attack", true);//attack animasyon çalýþacak level kontrol falan
-    }
-    public override void Die()
-    {
-        _animator.SetBool("die", true);
+        base.Die(_animator);
         canMove = false;
         GameManager.instance.GameOver();
     }
-    public bool canMove = true;
     public override void Movement()
     {
         if (!canMove)
             return;
-      
+
         _rb.velocity = new Vector3(_joystick.Horizontal * _moveSpeed, 0, _joystick.Vertical * _moveSpeed);
 
         if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
@@ -51,11 +48,6 @@ public class PlayerController : Characters
             _animator.SetBool("Run", false);
         }
     }
-    public override void LevelSystem(int levelCount)
-    {
-        base.LevelSystem(levelCount);
-    }
-
 
 
     // Player Trigger Control
@@ -63,38 +55,38 @@ public class PlayerController : Characters
     {
         if (other.CompareTag("Enemy"))
         {
-            Attack();
-
-            if (other.GetComponent<MovingEnemy>() != null && CheckLevel(other.GetComponent<MovingEnemy>().LevelCount))
-            {
-                other.GetComponent<MovingEnemy>().Die();
-
-            }  
-            else if (other.GetComponent<MotionlessEnemy>() != null && CheckLevel(other.GetComponent<MotionlessEnemy>().levelCount))
-            {
-                other.GetComponent<MotionlessEnemy>().Die();
-            }
-            else
-            {
-                Die();
-            }
+            Attack(_animator);
+            CheckAndDie(other);
         }
 
     }
-    public bool playerStatus;
+    public void CheckAndDie(Collider other)
+    {
+        if (other.GetComponent<MovingEnemy>() != null && CheckLevel(other.GetComponent<MovingEnemy>().levelCount))
+        {
+            other.GetComponent<MovingEnemy>().Die(other.GetComponent<MovingEnemy>()._animator);
+        }
+        else if (other.GetComponent<MotionlessEnemy>() != null && CheckLevel(other.GetComponent<MotionlessEnemy>().levelCount))
+        {
+            other.GetComponent<MotionlessEnemy>().Die(other.GetComponent<MotionlessEnemy>()._animator);
+        }
+        else if (other.GetComponent<RotatingEnemy>() != null && CheckLevel(other.GetComponent<RotatingEnemy>().levelCount))
+        {
+            other.GetComponent<RotatingEnemy>().Die(other.GetComponent<RotatingEnemy>()._animator);
+        }
+        else
+        {
+            Die(_animator);
+        }
+    }
     public bool CheckLevel(int enemyLevel)
     {
+        bool playerStatus;
         if (levelCount > enemyLevel)
             playerStatus = true;
         else
             playerStatus = false;
         return playerStatus;
     }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            _animator.SetBool("Attack", false);
-        }
-    }
+   
 }

@@ -17,10 +17,11 @@ public class UnlockManager : MonoBehaviour
 public class Keys
 {
     public GameObject key;
-    public Color color;
-    //public Keys(Color color, GameObject key)
-    //{
-    //    this.color = color;
-    //    this.key = key;
-    //}
+    public int id;
+
+    public Keys(int id, GameObject key)
+    {
+        this.id = id;
+        this.key = key;
+    }
 }

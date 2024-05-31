@@ -8,34 +8,23 @@ public class MovingEnemy : Enemy
 {
     [SerializeField] private Transform player;
     [SerializeField] private PathType pathType = PathType.CatmullRom;
-    [SerializeField] private Animator _animator;
+    public Animator _animator;
     [SerializeField] private List<Transform> pathVal = new();
     [SerializeField] private VisionCone visionCone;
     [SerializeField] private TextMeshPro Txt;
-    public int LevelCount;
+    public int levelCount;
+
     private void Start()
     {
         Movement();
-        SetLevelTxt();
+        LevelSystem(levelCount, Txt);
         visionCone.OnVisionHit += FieldOfView;
     }
-    public void SetLevelTxt()
+
+    public override void FieldOfView() => Attack(_animator);
+    public override void Die(Animator animator)
     {
-        levelTxt = Txt;
-        LevelSystem(LevelCount);
-    }
-    public override void Attack()
-    {
-        _animator.SetBool("attack", true);
-        DOVirtual.DelayedCall(1, () =>
-        {
-            _animator.SetBool("attack", false);
-        });
-    }
-    public override void Die()
-    {
-        _animator.SetBool("die", true);
-        DOTween.Kill(0);
+        base.Die(_animator);
     }
     public override void Movement()
     {
@@ -55,6 +44,7 @@ public class MovingEnemy : Enemy
     {
         StartCoroutine(WaitAtWaypoint(waypointIndex));
     }
+
     private IEnumerator WaitAtWaypoint(int waypointIndex)
     {
         player.transform.DOPause();
@@ -63,13 +53,6 @@ public class MovingEnemy : Enemy
         player.transform.DOPlay();
         _animator.SetBool("run", true);
     }
-    public override void LevelSystem(int levelCount)
-    {
-        base.LevelSystem(levelCount);
-    }
 
-    public override void FieldOfView()
-    {
-        Attack();
-    }
+
 }

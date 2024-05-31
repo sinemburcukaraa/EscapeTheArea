@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LookedDoor : MonoBehaviour
+public class DoorWithKeyTrigger : MonoBehaviour
 {
     public Color color;
     [SerializeField]private GameObject rightDoor;
     [SerializeField]private GameObject leftDoor;
+    public int id;
     private void Start()
     {
         rightDoor.GetComponent<MeshRenderer>().material.color = color;
@@ -19,7 +20,7 @@ public class LookedDoor : MonoBehaviour
         {
             for (int i = 0; i < UnlockManager.instance.Keys.Count; i++)
             {
-                if (UnlockManager.instance.Keys[i].color == color)
+                if (UnlockManager.instance.Keys[i].id == id)
                 {
                     leftDoor.GetComponent<Rigidbody>().isKinematic = false;  
                     rightDoor.GetComponent<Rigidbody>().isKinematic = false;

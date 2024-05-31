@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    public GameObject joysCanvas;
     public static UIManager instance;
     public GameObject winPanel, failPanel, startPanel, gamePanel;
     private void Awake()
@@ -14,18 +15,22 @@ public class UIManager : MonoBehaviour
     public void WinPanel(bool control)
     {
         winPanel.SetActive(control);
+        joysCanvas.SetActive(!control);
     }
     public void StartPanel(bool control)
     {
         startPanel.SetActive(control);
+
     }
     public void GamePanel(bool control)
     {
         gamePanel.SetActive(control);
+        joysCanvas.SetActive(control);
     }
     public void FailPanel(bool control)
     {
         failPanel.SetActive(control);
+        joysCanvas.SetActive(!control);
     }
     public void RestartScene()
     {

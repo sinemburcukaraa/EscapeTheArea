@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -5,20 +6,28 @@ using UnityEngine;
 
 public abstract class Characters : MonoBehaviour
 {
-    protected TextMeshPro levelTxt;
-    public virtual void LevelSystem(int levelCount)
+    public virtual void LevelSystem(int levelCount, TextMeshPro txt)
     {
-        if (levelTxt != null)
-            levelTxt.text = levelCount.ToString() + " Lvl";
+        if (txt != null)
+            txt.text = levelCount.ToString() + " Lvl";
     }
     public abstract void Movement();
-    public abstract void Attack();
-    public abstract void Die();
-    protected void CheckAndDie(int characterLevel, int enemyLevel)
+    public virtual void Attack(Animator _animator)
     {
-        if (characterLevel > enemyLevel)
+        _animator.SetBool("attack", true);
+        DOVirtual.DelayedCall(1, () =>
         {
-            Die();
-        }
+            _animator.SetBool("attack", false);
+        });
     }
+    public virtual void Die(Animator _animator)
+    {
+        _animator.SetBool("die", true);
+   
+        DOVirtual.DelayedCall(1, () =>
+        {
+            Destroy(gameObject);
+        });
+    }
+
 }

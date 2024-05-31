@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Key : MonoBehaviour, ICollectable
+public class UnlockableKey : MonoBehaviour, ICollectable
 {
     public Color color;
     UnlockManager unlockManager;
     public Image keyIcon;
+    public int id;
     private void Awake()
     {
         GetComponent<MeshRenderer>().material.color = color;
@@ -23,8 +24,8 @@ public class Key : MonoBehaviour, ICollectable
     }
     public void Collect()
     {
-        //Keys newKey = new Keys(color, this.gameObject); 
-        //unlockManager.Keys.Add(this);
+        Keys newKey = new Keys(id, this.gameObject);
+        unlockManager.Keys.Add(newKey);
         keyIcon.gameObject.SetActive(true);
         this.transform.gameObject.SetActive(false);
     }
