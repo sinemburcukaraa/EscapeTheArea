@@ -7,4 +7,5 @@ using JetBrains.Annotations;
 public abstract class Enemy : Characters
 {
     public abstract void FieldOfView();
+ 
 }

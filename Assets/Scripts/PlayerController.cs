@@ -11,7 +11,7 @@ public class PlayerController : Characters
     [SerializeField] private Animator _animator;
     [SerializeField] private float _moveSpeed;
     [SerializeField] private TextMeshPro Txt;
-    public int levelCount;   
+    public int levelCount;
 
     private void FixedUpdate()
     {
@@ -24,14 +24,20 @@ public class PlayerController : Characters
     }
     public override void Attack()
     {
-        _animator.SetBool("Attack", true);
+        _animator.SetBool("Attack", true);//attack animasyon çalýþacak level kontrol falan
     }
     public override void Die()
     {
-        print("die");
+        _animator.SetBool("die", true);
+        canMove = false;
+        GameManager.instance.GameOver();
     }
+    public bool canMove = true;
     public override void Movement()
     {
+        if (!canMove)
+            return;
+      
         _rb.velocity = new Vector3(_joystick.Horizontal * _moveSpeed, 0, _joystick.Vertical * _moveSpeed);
 
         if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
@@ -58,8 +64,31 @@ public class PlayerController : Characters
         if (other.CompareTag("Enemy"))
         {
             Attack();
+
+            if (other.GetComponent<MovingEnemy>() != null && CheckLevel(other.GetComponent<MovingEnemy>().LevelCount))
+            {
+                other.GetComponent<MovingEnemy>().Die();
+
+            }  
+            else if (other.GetComponent<MotionlessEnemy>() != null && CheckLevel(other.GetComponent<MotionlessEnemy>().levelCount))
+            {
+                other.GetComponent<MotionlessEnemy>().Die();
+            }
+            else
+            {
+                Die();
+            }
         }
 
+    }
+    public bool playerStatus;
+    public bool CheckLevel(int enemyLevel)
+    {
+        if (levelCount > enemyLevel)
+            playerStatus = true;
+        else
+            playerStatus = false;
+        return playerStatus;
     }
     private void OnTriggerExit(Collider other)
     {

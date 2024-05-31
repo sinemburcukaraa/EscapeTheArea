@@ -10,10 +10,9 @@ public class MovingEnemy : Enemy
     [SerializeField] private PathType pathType = PathType.CatmullRom;
     [SerializeField] private Animator _animator;
     [SerializeField] private List<Transform> pathVal = new();
-    [SerializeField] private int LevelCount;
     [SerializeField] private VisionCone visionCone;
     [SerializeField] private TextMeshPro Txt;
-
+    public int LevelCount;
     private void Start()
     {
         Movement();
@@ -25,10 +24,6 @@ public class MovingEnemy : Enemy
         levelTxt = Txt;
         LevelSystem(LevelCount);
     }
-    public override void FieldOfView()
-    {
-        Attack();
-    }
     public override void Attack()
     {
         _animator.SetBool("attack", true);
@@ -39,7 +34,8 @@ public class MovingEnemy : Enemy
     }
     public override void Die()
     {
-        _animator.SetBool("run", false);
+        _animator.SetBool("die", true);
+        DOTween.Kill(0);
     }
     public override void Movement()
     {
@@ -50,7 +46,8 @@ public class MovingEnemy : Enemy
         Tweener movement = player.transform.DOPath(pathPositions, 35, pathType)
             .SetOptions(true)
             .SetLookAt(0.01f)
-            .SetLoops(-1);
+            .SetLoops(-1)
+            .SetId(0);
 
         movement.OnWaypointChange(OnWaypointChange);
     }
@@ -61,7 +58,7 @@ public class MovingEnemy : Enemy
     private IEnumerator WaitAtWaypoint(int waypointIndex)
     {
         player.transform.DOPause();
-        _animator.SetBool("run", false); 
+        _animator.SetBool("run", false);
         yield return new WaitForSeconds(1);
         player.transform.DOPlay();
         _animator.SetBool("run", true);
@@ -69,5 +66,10 @@ public class MovingEnemy : Enemy
     public override void LevelSystem(int levelCount)
     {
         base.LevelSystem(levelCount);
+    }
+
+    public override void FieldOfView()
+    {
+        Attack();
     }
 }

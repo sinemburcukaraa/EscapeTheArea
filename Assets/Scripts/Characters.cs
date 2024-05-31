@@ -14,4 +14,11 @@ public abstract class Characters : MonoBehaviour
     public abstract void Movement();
     public abstract void Attack();
     public abstract void Die();
+    protected void CheckAndDie(int characterLevel, int enemyLevel)
+    {
+        if (characterLevel > enemyLevel)
+        {
+            Die();
+        }
+    }
 }

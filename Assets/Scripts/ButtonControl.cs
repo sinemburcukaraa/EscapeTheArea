@@ -23,7 +23,7 @@ public class ButtonControl : MonoBehaviour
     {
         lockSprite.sprite = lockImage;
         GetComponent<MeshRenderer>().material.color = Color.green;
-        transform.DOLocalMoveY(0.1f, 0.5f);
+        transform.DOLocalMoveY(0.19f, 0.5f);
     }
 
     public void DoorOpeningMovement()
