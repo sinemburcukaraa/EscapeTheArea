@@ -15,7 +15,7 @@ public class UnlockableKey : MonoBehaviour, ICollectable
         GetComponent<MeshRenderer>().material.color = color;
         unlockManager = UnlockManager.instance;
     }
-    private void OnTriggerEnter(Collider other)//collectable manager scripti aç;
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {

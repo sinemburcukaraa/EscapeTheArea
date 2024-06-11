@@ -10,7 +10,6 @@ public class MotionlessEnemy : Enemy
     public Animator _animator;
     public int levelCount;
     [SerializeField] private TextMeshPro Txt;
-    PlayerController _playerController;
     private void Start()
     {
         visionCone.OnVisionHit += FieldOfView;

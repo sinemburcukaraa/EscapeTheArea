@@ -23,7 +23,6 @@ public class PlayerController : Characters
     {
         LevelSystem(levelCount, Txt);
     }
-   
     public override void Die(Animator animator)
     {
         base.Die(_animator);
@@ -48,7 +47,6 @@ public class PlayerController : Characters
             _animator.SetBool("Run", false);
         }
     }
-
 
     // Player Trigger Control
     private void OnTriggerEnter(Collider other)

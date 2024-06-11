@@ -29,5 +29,4 @@ public abstract class Characters : MonoBehaviour
             Destroy(gameObject);
         });
     }
-
 }

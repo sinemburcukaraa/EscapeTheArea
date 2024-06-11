@@ -43,9 +43,7 @@ public class BarrelSystem : MonoBehaviour
             player = other.gameObject;
             player.transform.position=clickSprite.transform.position;
             clickSprite.SetActive(true);
-            other.gameObject.SetActive(false);
-          
+            other.gameObject.SetActive(false);       
         }
     }
-
 }
