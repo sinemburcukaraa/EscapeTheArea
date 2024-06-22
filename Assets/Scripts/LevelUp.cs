@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelUp : MonoBehaviour, ICollectable
 {
-    public int power;
+    [SerializeField] private int power;
     public PlayerController playerController;
     public delegate void LevelUpDel();
     public event LevelUpDel levelUp;
@@ -17,7 +17,8 @@ public class LevelUp : MonoBehaviour, ICollectable
     {
         if (other.CompareTag("Player"))
         {
-            Collect();
+            ICollectable collectable = this as ICollectable;
+            collectable?.Collect();
         }
     }
     public void Collect()

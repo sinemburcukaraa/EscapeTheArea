@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class DoorWithKeyTrigger : MonoBehaviour
 {
-    public Color color;
+    [SerializeField] private Color color;
     [SerializeField]private GameObject rightDoor;
     [SerializeField]private GameObject leftDoor;
-    public int id;
+    [SerializeField] private int id;
     private void Start()
     {
         rightDoor.GetComponent<MeshRenderer>().material.color = color;

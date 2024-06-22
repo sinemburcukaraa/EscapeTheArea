@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject joysCanvas;
+    [SerializeField] private GameObject joysCanvas;
     public static UIManager instance;
-    public GameObject winPanel, failPanel, startPanel, gamePanel;
+    [SerializeField] private GameObject winPanel, failPanel, startPanel, gamePanel;
     private void Awake()
     {
         instance = this;

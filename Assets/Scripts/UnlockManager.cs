@@ -14,7 +14,7 @@ public class UnlockManager : MonoBehaviour
    
 }
 [Serializable]
-public struct Keys
+public class Keys
 {
     public GameObject key;
     public int id;

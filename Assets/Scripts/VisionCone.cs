@@ -7,15 +7,15 @@ using UnityEngine;
 
 public class VisionCone : MonoBehaviour
 {
-    public Material VisionConeMaterial;
-    public float VisionRange;
-    public float VisionAngle;
-    public LayerMask VisionObstructingLayer;
-    public int VisionConeResolution = 120;
-    Mesh VisionConeMesh;
-    MeshFilter MeshFilter_;
+    [SerializeField] private Material VisionConeMaterial;
+    [SerializeField] private float VisionRange;
+    [SerializeField] private float VisionAngle;
+    [SerializeField] private LayerMask VisionObstructingLayer;
+    [SerializeField] private int VisionConeResolution = 120;
+    private Mesh VisionConeMesh;
+    private MeshFilter MeshFilter_;
 
-    public delegate void VisionHitEvent();
+    public delegate void VisionHitEvent();  
     public event VisionHitEvent OnVisionHit;
     void Start()
     {
@@ -49,7 +49,7 @@ public class VisionCone : MonoBehaviour
             {
                 Vertices[i + 1] = VertForward * hit.distance;
 
-                //playerin gorus alanýna girisi burda kontrol ediliyor.
+                //playerin gorus alanï¿½na girisi burda kontrol ediliyor.
                 if (hit.collider.gameObject.CompareTag("Player"))
                 {
                     OnVisionHit?.Invoke();

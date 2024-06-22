@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class BarrelSystem : MonoBehaviour
 {
-    public GameObject clickSprite;
-    public GameObject player;
+    [SerializeField] private GameObject clickSprite;
+    [SerializeField] private GameObject player;
 
     private Camera mainCamera;
 
@@ -25,12 +25,10 @@ public class BarrelSystem : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                print(hit.transform.gameObject.name);
                 if (hit.transform.gameObject == clickSprite)
                 {
                     player.SetActive(true);
                     clickSprite.SetActive(false);
-
                 }
             }
         }

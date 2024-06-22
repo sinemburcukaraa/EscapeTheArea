@@ -6,12 +6,12 @@ using UnityEngine;
 
 public abstract class Characters : MonoBehaviour
 {
+    public abstract void Movement();
     public virtual void LevelSystem(int levelCount, TextMeshPro txt)
     {
         if (txt != null)
             txt.text = levelCount.ToString() + " Lvl";
     }
-    public abstract void Movement();
     public virtual void Attack(Animator _animator)
     {
         _animator.SetBool("attack", true);

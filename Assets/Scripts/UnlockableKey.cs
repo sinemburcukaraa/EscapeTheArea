@@ -6,10 +6,10 @@ using UnityEngine.UI;
 
 public class UnlockableKey : MonoBehaviour, ICollectable
 {
-    public Color color;
-    UnlockManager unlockManager;
-    public Image keyIcon;
-    public int id;
+    [SerializeField] private Color color;
+    private UnlockManager unlockManager;
+    [SerializeField] private Image keyIcon;
+    [SerializeField] private int id;
     private void Awake()
     {
         GetComponent<MeshRenderer>().material.color = color;
@@ -19,7 +19,8 @@ public class UnlockableKey : MonoBehaviour, ICollectable
     {
         if (other.CompareTag("Player"))
         {
-            Collect();
+            ICollectable collectable = this as ICollectable;
+            collectable?.Collect();
         }
     }
     public void Collect()

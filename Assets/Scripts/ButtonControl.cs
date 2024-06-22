@@ -6,10 +6,10 @@ using Microsoft.Unity.VisualStudio.Editor;
 
 public class ButtonControl : MonoBehaviour
 {
-    public SpriteRenderer lockSprite;
-    public Sprite lockImage;
+    [SerializeField] private SpriteRenderer lockSprite;
+    [SerializeField] private Sprite lockImage;
 
-    public GameObject door;
+    [SerializeField] private GameObject door;
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LevelTextDirection : MonoBehaviour
 {
-    public Camera cam;
+    [SerializeField] private Camera cam;
     void Update()
     {
         transform.LookAt(cam.transform);
